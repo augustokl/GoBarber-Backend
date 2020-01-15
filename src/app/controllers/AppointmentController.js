@@ -82,7 +82,6 @@ class AppointmentController {
     });
 
     const user = await User.findByPk(req.userId);
-    console.log(user);
     const FormattedDate = format(hourStart, "dd 'de' MMMM',  às' H:mm'h'", {
       locale: pt,
     });
