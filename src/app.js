@@ -3,6 +3,7 @@ import path from 'path';
 import * as Sentry from '@sentry/node';
 import Youch from 'youch';
 import 'express-async-errors';
+import cors from 'cors';
 import routes from './routes';
 import sentryConfig from './config/sentry';
 
@@ -21,6 +22,7 @@ class App {
 
   middlewares() {
     this.server.use(Sentry.Handlers.requestHandler());
+    this.server.use(cors());
     this.server.use(express.json());
     this.server.use(
       '/files',
@@ -34,7 +36,7 @@ class App {
   }
 
   execptionHandlers() {
-    this.server.user(async (err, req, res, next) => {
+    this.server.use(async (err, req, res, next) => {
       const errors = await new Youch(err, req).toJSON();
 
       res.status(500).json(errors);
